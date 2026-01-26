@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 static bool print(const char* data, size_t length) {
@@ -79,7 +80,15 @@ int printf(const char* restrict format, ...) {
 			written += len;
 		}
 		else if (*format == 'd'){
-
+			format++;
+			char intStr[6];
+			volatile unsigned int num = va_arg(parameters, unsigned int);
+			citoa(num,intStr,10);
+			char len = strlen(intStr);
+			if (!print(intStr, len))
+				return -1;
+			written += len;
+			
 		}
 		else if (*format == 's') {
 			format++;

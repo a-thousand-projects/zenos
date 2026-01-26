@@ -68,19 +68,20 @@ char *exception_messages[] = {
 };
 
 void irq_handler(registers_t *r) {
-
+    if (r->int_no != 32) {
     printf("IRQ %d received (int_no=%d)\n", r->int_no - 32, r->int_no);
-
+    }
+    
     if (interrupt_handlers[r->int_no] != 0) {
         isr_t handler = interrupt_handlers[r->int_no];
         handler(r);
     }
 
-    
+    // Send EOI
     if (r->int_no >= 40) {
-        port_byte_out(0xA0, 0x20); // secondary EOI
+        port_byte_out(PIC_2_CMD, 0x20); // secondary EOI
     }
-    port_byte_out(0x20, 0x20); // primary EOI
+    port_byte_out(PIC_1_CMD, 0x20); // primary EOI
 }
 
 void isr_handler(registers_t *r) {
