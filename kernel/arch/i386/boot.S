@@ -12,6 +12,14 @@
 .long FLAGS
 .long CHECKSUM
 
+# Grok
+.section .data
+.global linked_label_addr
+linked_label_addr: .long 1f
+.global actual_eip
+actual_eip: .long 0
+#Grok end
+
 # Reserve a stack for the initial thread.
 .section .bss
 .align 16
@@ -28,12 +36,17 @@ _start:
 
 	# Call the global constructors.
 	call _init
-
+#grok
+	call 1f
+	1: pop %ebx
+	movl %ebx, actual_eip
+#end grok
 	# Transfer control to the main kernel.
 	call kernel_main
 
 	# Hang if kernel_main unexpectedly returns.
 	cli
-1:	hlt
+1:	call hang_message
+	hlt
 	jmp 1b
 .size _start, . - _start

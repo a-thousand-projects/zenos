@@ -2,8 +2,8 @@ DEFAULT_HOST!=../default-host.sh
 HOST?=DEFAULT_HOST
 HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
-CFLAGS?=-O2 -g
-CPPFLAGS?=
+CFLAGS?=-O0 -g
+CPPFLAGS?= 
 LDFLAGS?=
 LIBS?=
 
@@ -50,23 +50,23 @@ $(ARCHDIR)/crtn.o \
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S
 
-all: myos.kernel
+all: zenos.kernel
 
-myos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
-	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
-	grub-file --is-x86-multiboot myos.kernel
+zenos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
+	$(CC) -T $(ARCHDIR)/linker.ld -Wl,-Map,zenos.map -o $@ $(CFLAGS) $(LINK_LIST)
+	grub-file --is-x86-multiboot zenos.kernel
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
 .c.o:
-	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
+	$(CC) -MD -c  $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 
 .S.o:
-	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
+	$(CC) -MD -c  $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
 clean:
-	rm -f myos.kernel
+	rm -f zenos.kernel
 	rm -f $(OBJS) *.o */*.o */*/*.o
 	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
@@ -76,8 +76,8 @@ install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
 	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
-install-kernel: myos.kernel
+install-kernel: zenos.kernel
 	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp myos.kernel $(DESTDIR)$(BOOTDIR)
+	cp zenos.kernel $(DESTDIR)$(BOOTDIR)
 
 -include $(OBJS:.o=.d)

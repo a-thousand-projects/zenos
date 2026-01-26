@@ -50,7 +50,38 @@ int printf(const char* restrict format, ...) {
 			if (!print(&c, sizeof(c)))
 				return -1;
 			written++;
-		} else if (*format == 's') {
+		}else if(*format=='X'||*format=='x') {
+			bool uppercase = (*format == 'X');
+			format++;
+			unsigned int num = va_arg(parameters, unsigned int);
+			char buffer[9];
+			buffer[0] = num;
+
+			buffer[8] = '\0';
+			for (int i = 7; i >= 0; i--) {
+				unsigned int digit = num & 0xF;
+				if (digit < 10)
+					buffer[i] = '0' + digit;
+				else
+					buffer[i] = (uppercase ? 'A' : 'a') + (digit - 10);
+				num >>= 4;
+			}
+			size_t len = 8;
+			while (len > 1 && buffer[8 - len] == '0')
+				len--;
+
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(buffer + 8 - len, len))
+				return -1;
+			written += len;
+		}
+		else if (*format == 'd'){
+
+		}
+		else if (*format == 's') {
 			format++;
 			const char* str = va_arg(parameters, const char*);
 			size_t len = strlen(str);

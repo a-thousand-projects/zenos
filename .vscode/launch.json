@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Kernel with GDB",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/kernel/zenos.kernel",
+            "miDebuggerServerAddress": "localhost:1234",
+           // "miDebuggerPath": "/usr/bin/i686-elf-gdb",
+           "miDebuggerPath": "/usr/bin/gdb",
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "gdb"
+        }
+    ]
+}
