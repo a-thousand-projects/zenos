@@ -5,9 +5,9 @@
 #include <kernel/tty.h>
 #include "isr.h"
 #include "irq.h"
-#include "port_driver.h"
-#include "registers.h"
-#include "interrupt_driver.h"
+#include <kernel/port_driver.h>
+#include <kernel/registers.h>
+#include <kernel/interrupt_driver.h>
 
 
 
@@ -24,8 +24,6 @@
 #define PIC_2_CMD   0xA0
 #define PIC_2_DATA  0xA1
 
-
-static uint32_t offset;
 
 
 idt_gate_t idt[256];
@@ -69,9 +67,9 @@ char *exception_messages[] = {
 
 void irq_handler(registers_t *r) {
     if (r->int_no != 32) {
-    printf("IRQ %d received (int_no=%d)\n", r->int_no - 32, r->int_no);
+//    printf("IRQ %d received (int_no=%d)\n", r->int_no - 32, r->int_no);
     }
-    
+
     if (interrupt_handlers[r->int_no] != 0) {
         isr_t handler = interrupt_handlers[r->int_no];
         handler(r);
@@ -86,8 +84,8 @@ void irq_handler(registers_t *r) {
 
 void isr_handler(registers_t *r) {
     printf("Exception %d triggered\n", r->int_no);
-while(1);
-
+    printf("** System Halting **");
+    while(1);
 }
 
 void set_idt_gate(int n, uint32_t handler) {
@@ -104,7 +102,7 @@ void set_idt_gate(int n, uint32_t handler) {
 
 
 
-void isr_install() {
+void install_interrupts() {
     set_idt_gate(0, (uint32_t) isr0);
     set_idt_gate(1, (uint32_t) isr1);
     set_idt_gate(2, (uint32_t) isr2);
@@ -159,11 +157,6 @@ void isr_install() {
     port_byte_out(PIC_1_DATA, 0x0);
     port_byte_out(PIC_2_DATA, 0x0);
     
-    printf("PIC initialized. Checking masks...\n");
-    uint8_t mask1 = port_byte_in(PIC_1_DATA);
-    uint8_t mask2 = port_byte_in(PIC_2_DATA);
-    printf("PIC1 mask: %X, PIC2 mask: %X\n", mask1, mask2);
-
 
     // IRQ ISRs (primary PIC)
     set_idt_gate(32, (uint32_t)irq0);

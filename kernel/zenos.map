@@ -32,13 +32,14 @@ LOAD arch/i386/isr.o
 LOAD arch/i386/irq.o
 LOAD arch/i386/keyboard_driver.o
 LOAD kernel/kernel.o
+LOAD kernel/cbuffer.o
 LOAD /home/graeme/source/zenos/sysroot/usr/lib/libk.a
 LOAD /home/graeme/opt/cross/lib/gcc/i686-elf/14.2.0/libgcc.a
 LOAD arch/i386/crtend.o
 LOAD arch/i386/crtn.o
                 0x00100000                        . = 0x100000
 
-.text           0x00100000     0x1439
+.text           0x00100000     0x14f9
  *(.multiboot)
  .multiboot     0x00100000        0xc arch/i386/boot.o
  *(.text)
@@ -66,151 +67,154 @@ LOAD arch/i386/crtn.o
                 0x001003c0                terminal_writestring
                 0x00100400                terminal_nl
  *fill*         0x0010041e        0x2 
- .text          0x00100420      0x7af arch/i386/interrupt_driver.o
+ .text          0x00100420      0x75f arch/i386/interrupt_driver.o
                 0x00100420                irq_handler
-                0x001004a0                isr_handler
-                0x001004c0                set_idt_gate
-                0x00100500                isr_install
-                0x00100b90                register_interrupt_handler
-                0x00100bb0                load_idt
- .text          0x00100bcf       0xf2 arch/i386/isr.o
-                0x00100bcf                isr0
-                0x00100bd8                isr1
-                0x00100be1                isr2
-                0x00100bea                isr3
-                0x00100bf3                isr4
-                0x00100bfc                isr5
-                0x00100c05                isr6
-                0x00100c0e                isr7
-                0x00100c17                isr8
-                0x00100c1b                isr9
-                0x00100c21                isr10
-                0x00100c25                isr11
-                0x00100c29                isr12
-                0x00100c2d                isr13
-                0x00100c31                isr14
-                0x00100c35                isr15
-                0x00100c3b                isr16
-                0x00100c41                isr17
-                0x00100c45                isr18
-                0x00100c4b                isr19
-                0x00100c51                isr20
-                0x00100c57                isr21
-                0x00100c5d                isr22
-                0x00100c63                isr23
-                0x00100c69                isr24
-                0x00100c6f                isr25
-                0x00100c75                isr26
-                0x00100c7b                isr27
-                0x00100c81                isr28
-                0x00100c87                isr29
-                0x00100c8d                isr30
-                0x00100c93                isr31
-                0x00100c99                isr_common_stub
- .text          0x00100cc1      0x106 arch/i386/irq.o
-                0x00100cc1                irq0
-                0x00100cca                irq1
-                0x00100cd3                irq2
-                0x00100cdc                irq3
-                0x00100ce5                irq4
-                0x00100cee                irq5
-                0x00100cf7                irq6
-                0x00100d00                irq7
-                0x00100d09                irq8
-                0x00100d12                irq9
-                0x00100d1b                irq10
-                0x00100d21                irq11
-                0x00100d27                irq12
-                0x00100d2d                irq13
-                0x00100d33                irq14
-                0x00100d39                irq15
-                0x00100d3f                irq16
-                0x00100d45                irq17
-                0x00100d4b                irq18
-                0x00100d51                irq19
-                0x00100d57                irq20
-                0x00100d5d                irq21
-                0x00100d63                irq22
-                0x00100d69                irq23
-                0x00100d6f                irq24
-                0x00100d75                irq25
-                0x00100d7b                irq26
-                0x00100d81                irq27
-                0x00100d87                irq28
-                0x00100d8d                irq29
-                0x00100d93                irq30
-                0x00100d99                irq31
-                0x00100d9f                irq_common_stub
- *fill*         0x00100dc7        0x9 
- .text          0x00100dd0       0x58 arch/i386/keyboard_driver.o
+                0x00100480                isr_handler
+                0x001004b0                set_idt_gate
+                0x001004f0                install_interrupts
+                0x00100b40                register_interrupt_handler
+                0x00100b60                load_idt
+ .text          0x00100b7f       0xf2 arch/i386/isr.o
+                0x00100b7f                isr0
+                0x00100b88                isr1
+                0x00100b91                isr2
+                0x00100b9a                isr3
+                0x00100ba3                isr4
+                0x00100bac                isr5
+                0x00100bb5                isr6
+                0x00100bbe                isr7
+                0x00100bc7                isr8
+                0x00100bcb                isr9
+                0x00100bd1                isr10
+                0x00100bd5                isr11
+                0x00100bd9                isr12
+                0x00100bdd                isr13
+                0x00100be1                isr14
+                0x00100be5                isr15
+                0x00100beb                isr16
+                0x00100bf1                isr17
+                0x00100bf5                isr18
+                0x00100bfb                isr19
+                0x00100c01                isr20
+                0x00100c07                isr21
+                0x00100c0d                isr22
+                0x00100c13                isr23
+                0x00100c19                isr24
+                0x00100c1f                isr25
+                0x00100c25                isr26
+                0x00100c2b                isr27
+                0x00100c31                isr28
+                0x00100c37                isr29
+                0x00100c3d                isr30
+                0x00100c43                isr31
+                0x00100c49                isr_common_stub
+ .text          0x00100c71      0x106 arch/i386/irq.o
+                0x00100c71                irq0
+                0x00100c7a                irq1
+                0x00100c83                irq2
+                0x00100c8c                irq3
+                0x00100c95                irq4
+                0x00100c9e                irq5
+                0x00100ca7                irq6
+                0x00100cb0                irq7
+                0x00100cb9                irq8
+                0x00100cc2                irq9
+                0x00100ccb                irq10
+                0x00100cd1                irq11
+                0x00100cd7                irq12
+                0x00100cdd                irq13
+                0x00100ce3                irq14
+                0x00100ce9                irq15
+                0x00100cef                irq16
+                0x00100cf5                irq17
+                0x00100cfb                irq18
+                0x00100d01                irq19
+                0x00100d07                irq20
+                0x00100d0d                irq21
+                0x00100d13                irq22
+                0x00100d19                irq23
+                0x00100d1f                irq24
+                0x00100d25                irq25
+                0x00100d2b                irq26
+                0x00100d31                irq27
+                0x00100d37                irq28
+                0x00100d3d                irq29
+                0x00100d43                irq30
+                0x00100d49                irq31
+                0x00100d4f                irq_common_stub
+ *fill*         0x00100d77        0x9 
+ .text          0x00100d80       0x97 arch/i386/keyboard_driver.o
                 0x00100e00                keyboard_init
- *fill*         0x00100e28        0x8 
- .text          0x00100e30       0x58 kernel/kernel.o
-                0x00100e30                hang_message
-                0x00100e50                kernel_main
- *fill*         0x00100e88       0x38 
- .text          0x00100ec0      0x3e4 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
-                0x00100ec0                printf
- *fill*         0x001012a4        0xc 
- .text          0x001012b0       0x1f /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
-                0x001012b0                putchar
- *fill*         0x001012cf       0x11 
- .text          0x001012e0       0xaa /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
-                0x001012e0                citoa
- *fill*         0x0010138a        0x6 
- .text          0x00101390       0x1b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
-                0x00101390                strlen
- *fill*         0x001013ab       0x15 
- .text          0x001013c0       0x3e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
-                0x001013c0                reverse
- *fill*         0x001013fe        0x2 
- .text          0x00101400       0x39 arch/i386/crtend.o
- .text          0x00101439        0x0 arch/i386/crtn.o
+ *fill*         0x00100e17        0x9 
+ .text          0x00100e20       0xd7 kernel/kernel.o
+                0x00100e20                hang_message
+                0x00100e40                kernel_main
+ *fill*         0x00100ef7        0x9 
+ .text          0x00100f00       0x65 kernel/cbuffer.o
+                0x00100f00                cbuffer_initialise
+                0x00100f20                cbuffer_add
+ *fill*         0x00100f65       0x1b 
+ .text          0x00100f80      0x3e4 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x00100f80                printf
+ *fill*         0x00101364        0xc 
+ .text          0x00101370       0x1f /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+                0x00101370                putchar
+ *fill*         0x0010138f       0x11 
+ .text          0x001013a0       0xaa /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x001013a0                citoa
+ *fill*         0x0010144a        0x6 
+ .text          0x00101450       0x1b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x00101450                strlen
+ *fill*         0x0010146b       0x15 
+ .text          0x00101480       0x3e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x00101480                reverse
+ *fill*         0x001014be        0x2 
+ .text          0x001014c0       0x39 arch/i386/crtend.o
+ .text          0x001014f9        0x0 arch/i386/crtn.o
 
-.init           0x00101439        0xf
- .init          0x00101439        0x3 arch/i386/crti.o
-                0x00101439                _init
- .init          0x0010143c        0x5 arch/i386/crtbegin.o
- .init          0x00101441        0x5 arch/i386/crtend.o
- .init          0x00101446        0x2 arch/i386/crtn.o
+.init           0x001014f9        0xf
+ .init          0x001014f9        0x3 arch/i386/crti.o
+                0x001014f9                _init
+ .init          0x001014fc        0x5 arch/i386/crtbegin.o
+ .init          0x00101501        0x5 arch/i386/crtend.o
+ .init          0x00101506        0x2 arch/i386/crtn.o
 
-.fini           0x00101448        0xa
- .fini          0x00101448        0x3 arch/i386/crti.o
-                0x00101448                _fini
- .fini          0x0010144b        0x5 arch/i386/crtbegin.o
- .fini          0x00101450        0x2 arch/i386/crtn.o
+.fini           0x00101508        0xa
+ .fini          0x00101508        0x3 arch/i386/crti.o
+                0x00101508                _fini
+ .fini          0x0010150b        0x5 arch/i386/crtbegin.o
+ .fini          0x00101510        0x2 arch/i386/crtn.o
 
-.iplt           0x00101452        0x0
- .iplt          0x00101452        0x0 arch/i386/crti.o
+.iplt           0x00101512        0x0
+ .iplt          0x00101512        0x0 arch/i386/crti.o
 
-.rodata         0x00102000       0x84
+.rodata         0x00102000      0x184
  *(.rodata)
- .rodata        0x00102000       0x84 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .rodata        0x00102000      0x100 arch/i386/keyboard_driver.o
+ .rodata        0x00102100       0x84 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
 
-.eh_frame       0x00102084        0x4
- .eh_frame      0x00102084        0x0 arch/i386/crtbegin.o
- .eh_frame      0x00102084        0x4 arch/i386/crtend.o
+.eh_frame       0x00102184        0x4
+ .eh_frame      0x00102184        0x0 arch/i386/crtbegin.o
+ .eh_frame      0x00102184        0x4 arch/i386/crtend.o
 
-.rodata.str1.1  0x00102088      0x234
+.rodata.str1.1  0x00102188      0x271
  .rodata.str1.1
-                0x00102088      0x234 arch/i386/interrupt_driver.o
-                                0x216 (size before relaxing)
+                0x00102188      0x271 arch/i386/interrupt_driver.o
+                                0x1f0 (size before relaxing)
  .rodata.str1.1
-                0x001022bc       0x1e kernel/kernel.o
+                0x001023f9       0x81 kernel/kernel.o
 
-.rodata.str1.4  0x001022bc       0xb4
+.rodata.str1.4  0x001023fc       0x68
  .rodata.str1.4
-                0x001022bc       0xb4 arch/i386/interrupt_driver.o
-                                 0x43 (size before relaxing)
+                0x001023fc       0x68 arch/i386/interrupt_driver.o
+                                 0x1f (size before relaxing)
  .rodata.str1.4
-                0x00102370       0x46 arch/i386/keyboard_driver.o
- .rodata.str1.4
-                0x00102370       0x28 kernel/kernel.o
+                0x00102464       0x48 kernel/kernel.o
 
-.rel.dyn        0x00102370        0x0
- .rel.got       0x00102370        0x0 arch/i386/crti.o
- .rel.iplt      0x00102370        0x0 arch/i386/crti.o
- .rel.text      0x00102370        0x0 arch/i386/crti.o
+.rel.dyn        0x00102464        0x0
+ .rel.got       0x00102464        0x0 arch/i386/crti.o
+ .rel.iplt      0x00102464        0x0 arch/i386/crti.o
+ .rel.text      0x00102464        0x0 arch/i386/crti.o
 
 .data           0x00103000       0xa0
  *(.data)
@@ -231,6 +235,7 @@ LOAD arch/i386/crtn.o
  .data          0x001030a0        0x0 arch/i386/irq.o
  .data          0x001030a0        0x0 arch/i386/keyboard_driver.o
  .data          0x001030a0        0x0 kernel/kernel.o
+ .data          0x001030a0        0x0 kernel/cbuffer.o
  .data          0x001030a0        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .data          0x001030a0        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .data          0x001030a0        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
@@ -264,7 +269,7 @@ LOAD arch/i386/crtn.o
  .tm_clone_table
                 0x001030b0        0x0 arch/i386/crtend.o
 
-.bss            0x00104000     0x4c80
+.bss            0x00104000     0x4d00
  *(COMMON)
  *(.bss)
  .bss           0x00104000        0x0 arch/i386/crti.o
@@ -283,113 +288,121 @@ LOAD arch/i386/crtn.o
                 0x00108480                idt
  .bss           0x00108c80        0x0 arch/i386/isr.o
  .bss           0x00108c80        0x0 arch/i386/irq.o
- .bss           0x00108c80        0x0 arch/i386/keyboard_driver.o
- .bss           0x00108c80        0x0 kernel/kernel.o
- .bss           0x00108c80        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .bss           0x00108c80        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .bss           0x00108c80        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .bss           0x00108c80        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .bss           0x00108c80        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .bss           0x00108c80        0x0 arch/i386/crtend.o
- .bss           0x00108c80        0x0 arch/i386/crtn.o
+ .bss           0x00108c80        0x4 arch/i386/keyboard_driver.o
+                0x00108c80                isShift
+ .bss           0x00108c84        0x0 kernel/kernel.o
+ *fill*         0x00108c84       0x1c 
+ .bss           0x00108ca0       0x60 kernel/cbuffer.o
+ .bss           0x00108d00        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .bss           0x00108d00        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .bss           0x00108d00        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .bss           0x00108d00        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .bss           0x00108d00        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .bss           0x00108d00        0x0 arch/i386/crtend.o
+ .bss           0x00108d00        0x0 arch/i386/crtn.o
 OUTPUT(zenos.kernel elf32-i386)
 
-.debug_line     0x00000000     0x1834
+.debug_line     0x00000000     0x192c
  .debug_line    0x00000000       0x58 arch/i386/crti.o
  .debug_line    0x00000058       0x52 arch/i386/boot.o
  .debug_line    0x000000aa       0x71 arch/i386/port_driver.o
  .debug_line    0x0000011b       0xdf arch/i386/gdt.o
  .debug_line    0x000001fa       0x50 arch/i386/gdt_flush.o
  .debug_line    0x0000024a      0x309 arch/i386/tty.o
- .debug_line    0x00000553      0x910 arch/i386/interrupt_driver.o
- .debug_line    0x00000e63       0xb5 arch/i386/isr.o
- .debug_line    0x00000f18       0xbc arch/i386/irq.o
- .debug_line    0x00000fd4       0x93 arch/i386/keyboard_driver.o
- .debug_line    0x00001067       0x9f kernel/kernel.o
- .debug_line    0x00001106      0x45b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_line    0x00001561       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_line    0x000015d9       0xf5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_line    0x000016ce       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_line    0x00001746       0x98 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_line    0x000017de       0x56 arch/i386/crtn.o
+ .debug_line    0x00000553      0x8dc arch/i386/interrupt_driver.o
+ .debug_line    0x00000e2f       0xb5 arch/i386/isr.o
+ .debug_line    0x00000ee4       0xbc arch/i386/irq.o
+ .debug_line    0x00000fa0       0xfb arch/i386/keyboard_driver.o
+ .debug_line    0x0000109b       0xc6 kernel/kernel.o
+ .debug_line    0x00001161       0x9d kernel/cbuffer.o
+ .debug_line    0x000011fe      0x45b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_line    0x00001659       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_line    0x000016d1       0xf5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_line    0x000017c6       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_line    0x0000183e       0x98 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_line    0x000018d6       0x56 arch/i386/crtn.o
 
 .debug_line_str
-                0x00000000      0x284
+                0x00000000      0x29f
  .debug_line_str
-                0x00000000      0x284 arch/i386/crti.o
+                0x00000000      0x29f arch/i386/crti.o
                                  0x32 (size before relaxing)
  .debug_line_str
-                0x00000284       0x32 arch/i386/boot.o
+                0x0000029f       0x32 arch/i386/boot.o
  .debug_line_str
-                0x00000284       0x80 arch/i386/port_driver.o
+                0x0000029f       0x80 arch/i386/port_driver.o
  .debug_line_str
-                0x00000284       0xac arch/i386/gdt.o
+                0x0000029f       0xac arch/i386/gdt.o
  .debug_line_str
-                0x00000284       0x37 arch/i386/gdt_flush.o
+                0x0000029f       0x37 arch/i386/gdt_flush.o
  .debug_line_str
-                0x00000284       0xf2 arch/i386/tty.o
+                0x0000029f      0x101 arch/i386/tty.o
  .debug_line_str
-                0x00000284      0x142 arch/i386/interrupt_driver.o
+                0x0000029f      0x151 arch/i386/interrupt_driver.o
  .debug_line_str
-                0x00000284       0x31 arch/i386/isr.o
+                0x0000029f       0x31 arch/i386/isr.o
  .debug_line_str
-                0x00000284       0x31 arch/i386/irq.o
+                0x0000029f       0x31 arch/i386/irq.o
  .debug_line_str
-                0x00000284      0x133 arch/i386/keyboard_driver.o
+                0x0000029f      0x121 arch/i386/keyboard_driver.o
  .debug_line_str
-                0x00000284       0xc8 kernel/kernel.o
+                0x0000029f      0x12f kernel/kernel.o
  .debug_line_str
-                0x00000284       0xd0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x0000029f       0x6e kernel/cbuffer.o
  .debug_line_str
-                0x00000284       0xe3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+                0x0000029f       0xd0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_line_str
-                0x00000284       0x75 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x0000029f       0xe3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .debug_line_str
-                0x00000284       0xa7 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x0000029f       0x75 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
  .debug_line_str
-                0x00000284       0x67 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x0000029f       0xa7 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
  .debug_line_str
-                0x00000284       0x32 arch/i386/crtn.o
+                0x0000029f       0x67 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_line_str
+                0x0000029f       0x32 arch/i386/crtn.o
 
-.debug_info     0x00000000     0x22f6
+.debug_info     0x00000000     0x25a2
  .debug_info    0x00000000       0x23 arch/i386/crti.o
  .debug_info    0x00000023       0x31 arch/i386/boot.o
  .debug_info    0x00000054       0xa1 arch/i386/port_driver.o
  .debug_info    0x000000f5      0x2b2 arch/i386/gdt.o
  .debug_info    0x000003a7       0x24 arch/i386/gdt_flush.o
  .debug_info    0x000003cb      0x54f arch/i386/tty.o
- .debug_info    0x0000091a      0xd81 arch/i386/interrupt_driver.o
- .debug_info    0x0000169b       0x25 arch/i386/isr.o
- .debug_info    0x000016c0       0x25 arch/i386/irq.o
- .debug_info    0x000016e5      0x269 arch/i386/keyboard_driver.o
- .debug_info    0x0000194e      0x13d kernel/kernel.o
- .debug_info    0x00001a8b      0x4fe /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_info    0x00001f89       0xc1 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_info    0x0000204a      0x11e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_info    0x00002168       0xb2 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_info    0x0000221a       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_info    0x000022d3       0x23 arch/i386/crtn.o
+ .debug_info    0x0000091a      0xd16 arch/i386/interrupt_driver.o
+ .debug_info    0x00001630       0x25 arch/i386/isr.o
+ .debug_info    0x00001655       0x25 arch/i386/irq.o
+ .debug_info    0x0000167a      0x339 arch/i386/keyboard_driver.o
+ .debug_info    0x000019b3      0x256 kernel/kernel.o
+ .debug_info    0x00001c09      0x104 kernel/cbuffer.o
+ .debug_info    0x00001d0d      0x4fe /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_info    0x0000220b       0xeb /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_info    0x000022f6      0x11e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_info    0x00002414       0xb2 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_info    0x000024c6       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_info    0x0000257f       0x23 arch/i386/crtn.o
 
-.debug_abbrev   0x00000000      0xd87
+.debug_abbrev   0x00000000      0xec4
  .debug_abbrev  0x00000000       0x12 arch/i386/crti.o
  .debug_abbrev  0x00000012       0x28 arch/i386/boot.o
  .debug_abbrev  0x0000003a       0x7b arch/i386/port_driver.o
  .debug_abbrev  0x000000b5      0x11a arch/i386/gdt.o
  .debug_abbrev  0x000001cf       0x14 arch/i386/gdt_flush.o
  .debug_abbrev  0x000001e3      0x22e arch/i386/tty.o
- .debug_abbrev  0x00000411      0x26a arch/i386/interrupt_driver.o
- .debug_abbrev  0x0000067b       0x14 arch/i386/isr.o
- .debug_abbrev  0x0000068f       0x14 arch/i386/irq.o
- .debug_abbrev  0x000006a3      0x136 arch/i386/keyboard_driver.o
- .debug_abbrev  0x000007d9       0xdb kernel/kernel.o
- .debug_abbrev  0x000008b4      0x210 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_abbrev  0x00000ac4       0xab /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_abbrev  0x00000b6f       0xd3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_abbrev  0x00000c42       0x8e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_abbrev  0x00000cd0       0xa5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_abbrev  0x00000d75       0x12 arch/i386/crtn.o
+ .debug_abbrev  0x00000411      0x25a arch/i386/interrupt_driver.o
+ .debug_abbrev  0x0000066b       0x14 arch/i386/isr.o
+ .debug_abbrev  0x0000067f       0x14 arch/i386/irq.o
+ .debug_abbrev  0x00000693      0x191 arch/i386/keyboard_driver.o
+ .debug_abbrev  0x00000824      0x11d kernel/kernel.o
+ .debug_abbrev  0x00000941       0xb0 kernel/cbuffer.o
+ .debug_abbrev  0x000009f1      0x210 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_abbrev  0x00000c01       0xab /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_abbrev  0x00000cac       0xd3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_abbrev  0x00000d7f       0x8e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_abbrev  0x00000e0d       0xa5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_abbrev  0x00000eb2       0x12 arch/i386/crtn.o
 
-.debug_aranges  0x00000000      0x230
+.debug_aranges  0x00000000      0x250
  .debug_aranges
                 0x00000000       0x28 arch/i386/crti.o
  .debug_aranges
@@ -413,50 +426,55 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_aranges
                 0x00000148       0x20 kernel/kernel.o
  .debug_aranges
-                0x00000168       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x00000168       0x20 kernel/cbuffer.o
  .debug_aranges
-                0x00000188       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+                0x00000188       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_aranges
-                0x000001a8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x000001a8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .debug_aranges
-                0x000001c8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x000001c8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
  .debug_aranges
-                0x000001e8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x000001e8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
  .debug_aranges
-                0x00000208       0x28 arch/i386/crtn.o
+                0x00000208       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_aranges
+                0x00000228       0x28 arch/i386/crtn.o
 
-.debug_str      0x00000000      0x75b
- .debug_str     0x00000000      0x75b arch/i386/crti.o
+.debug_str      0x00000000      0x79a
+ .debug_str     0x00000000      0x79a arch/i386/crti.o
                                  0x3e (size before relaxing)
- .debug_str     0x0000075b       0x45 arch/i386/boot.o
- .debug_str     0x0000075b       0x9e arch/i386/port_driver.o
- .debug_str     0x0000075b      0x170 arch/i386/gdt.o
- .debug_str     0x0000075b       0x43 arch/i386/gdt_flush.o
- .debug_str     0x0000075b      0x349 arch/i386/tty.o
- .debug_str     0x0000075b      0x35a arch/i386/interrupt_driver.o
- .debug_str     0x0000075b       0x3d arch/i386/isr.o
- .debug_str     0x0000075b       0x3d arch/i386/irq.o
- .debug_str     0x0000075b      0x19b arch/i386/keyboard_driver.o
- .debug_str     0x0000075b      0x13e kernel/kernel.o
- .debug_str     0x0000075b      0x170 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_str     0x0000075b       0xb3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_str     0x0000075b       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_str     0x0000075b       0xa3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_str     0x0000075b       0x70 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_str     0x0000075b       0x3e arch/i386/crtn.o
+ .debug_str     0x0000079a       0x45 arch/i386/boot.o
+ .debug_str     0x0000079a       0x9e arch/i386/port_driver.o
+ .debug_str     0x0000079a      0x170 arch/i386/gdt.o
+ .debug_str     0x0000079a       0x43 arch/i386/gdt_flush.o
+ .debug_str     0x0000079a      0x349 arch/i386/tty.o
+ .debug_str     0x0000079a      0x341 arch/i386/interrupt_driver.o
+ .debug_str     0x0000079a       0x3d arch/i386/isr.o
+ .debug_str     0x0000079a       0x3d arch/i386/irq.o
+ .debug_str     0x0000079a      0x2f7 arch/i386/keyboard_driver.o
+ .debug_str     0x0000079a      0x2b1 kernel/kernel.o
+ .debug_str     0x0000079a      0x115 kernel/cbuffer.o
+ .debug_str     0x0000079a      0x170 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_str     0x0000079a      0x10e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_str     0x0000079a       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_str     0x0000079a       0xa3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_str     0x0000079a       0x70 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_str     0x0000079a       0x3e arch/i386/crtn.o
 
 .debug_rnglists
-                0x00000000      0x392
+                0x00000000      0x3aa
  .debug_rnglists
                 0x00000000       0x19 arch/i386/crti.o
  .debug_rnglists
                 0x00000019       0x66 arch/i386/tty.o
  .debug_rnglists
-                0x0000007f      0x231 arch/i386/interrupt_driver.o
+                0x0000007f      0x236 arch/i386/interrupt_driver.o
  .debug_rnglists
-                0x000002b0       0xc9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x000002b5       0x13 arch/i386/keyboard_driver.o
  .debug_rnglists
-                0x00000379       0x19 arch/i386/crtn.o
+                0x000002c8       0xc9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_rnglists
+                0x00000391       0x19 arch/i386/crtn.o
 
 .comment        0x00000000       0x12
  .comment       0x00000000       0x12 arch/i386/crtbegin.o
@@ -467,6 +485,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .comment       0x00000012       0x13 arch/i386/interrupt_driver.o
  .comment       0x00000012       0x13 arch/i386/keyboard_driver.o
  .comment       0x00000012       0x13 kernel/kernel.o
+ .comment       0x00000012       0x13 kernel/cbuffer.o
  .comment       0x00000012       0x13 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .comment       0x00000012       0x13 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .comment       0x00000012       0x13 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
@@ -475,7 +494,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .comment       0x00000012       0x13 arch/i386/crtend.o
 
 .debug_loclists
-                0x00000000      0xbd8
+                0x00000000      0xbf6
  .debug_loclists
                 0x00000000       0x14 arch/i386/port_driver.o
  .debug_loclists
@@ -483,27 +502,28 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_loclists
                 0x00000089      0x18f arch/i386/tty.o
  .debug_loclists
-                0x00000218      0x248 arch/i386/interrupt_driver.o
+                0x00000218      0x234 arch/i386/interrupt_driver.o
  .debug_loclists
-                0x00000460       0x14 arch/i386/keyboard_driver.o
+                0x0000044c       0x46 arch/i386/keyboard_driver.o
  .debug_loclists
-                0x00000474      0x5dc /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x00000492      0x5dc /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_loclists
-                0x00000a50      0x110 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x00000a6e      0x110 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
  .debug_loclists
-                0x00000b60       0x2c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x00000b7e       0x2c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
  .debug_loclists
-                0x00000b8c       0x4c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x00000baa       0x4c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
 
-.debug_frame    0x00000000      0x45c
+.debug_frame    0x00000000      0x4b8
  .debug_frame   0x00000000       0x54 arch/i386/port_driver.o
  .debug_frame   0x00000054       0x34 arch/i386/gdt.o
  .debug_frame   0x00000088      0x120 arch/i386/tty.o
- .debug_frame   0x000001a8       0xc8 arch/i386/interrupt_driver.o
- .debug_frame   0x00000270       0x54 arch/i386/keyboard_driver.o
- .debug_frame   0x000002c4       0x4c kernel/kernel.o
- .debug_frame   0x00000310       0x54 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_frame   0x00000364       0x38 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_frame   0x0000039c       0x50 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_frame   0x000003ec       0x34 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_frame   0x00000420       0x3c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_frame   0x000001a8       0xc0 arch/i386/interrupt_driver.o
+ .debug_frame   0x00000268       0x6c arch/i386/keyboard_driver.o
+ .debug_frame   0x000002d4       0x4c kernel/kernel.o
+ .debug_frame   0x00000320       0x4c kernel/cbuffer.o
+ .debug_frame   0x0000036c       0x54 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_frame   0x000003c0       0x38 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_frame   0x000003f8       0x50 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_frame   0x00000448       0x34 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_frame   0x0000047c       0x3c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)

@@ -9,7 +9,7 @@
 #define IDT_ENTRIES 256
 
 void load_idt();
-void isr_install();
+void install_interrupts();
 
 typedef struct {
     uint16_t limit;
@@ -36,5 +36,6 @@ typedef void (*isr_t)(registers_t *);
 
 /* Function to register interrupt handler with custom call back function */
 void register_interrupt_handler(uint8_t n, isr_t handler);
+void install_interrupts();
 
 #endif
