@@ -59,10 +59,14 @@ static void keyboard_callback(registers_t *regs) {
     {
         case KEY_SHIFT_DOWN :
             isShift = 1;
+            terminal_cursor_type(CURSOR_SHIFT);
+            terminal_cursor_enable();
             terminal_putentryat('S',VGA_COLOR_LIGHT_CYAN,79,24);
         break;
         case (KEY_SHIFT_UP):
             isShift = 0;
+            terminal_cursor_type(CURSOR_DEFAULT);
+            terminal_cursor_enable();
             terminal_putentryat(' ',VGA_COLOR_LIGHT_CYAN,79,24);
         break;
         default:
