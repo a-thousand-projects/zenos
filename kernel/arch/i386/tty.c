@@ -79,11 +79,18 @@ void terminal_putchar(char c) {
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
+	// Move Cursor
+	terminal_cursor_put(terminal_column,terminal_row);
+
 }
 
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
+	{
 		terminal_putchar(data[i]);
+		terminal_cursor_put(terminal_column,terminal_row);
+	}
+
 }
 
 void terminal_writestring(const char* data) {
