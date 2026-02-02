@@ -148,17 +148,18 @@ LOAD arch/i386/crtn.o
                 0x00100fd9                irq31
                 0x00100fdf                irq_common_stub
  *fill*         0x00101007        0x9 
- .text          0x00101010       0xb7 arch/i386/keyboard_driver.o
-                0x001010b0                keyboard_init
- *fill*         0x001010c7        0x9 
- .text          0x001010d0       0xd7 kernel/kernel.o
-                0x001010d0                hang_message
-                0x001010f0                kernel_main
- *fill*         0x001011a7        0x9 
- .text          0x001011b0       0x65 kernel/cbuffer.o
-                0x001011b0                cbuffer_initialise
-                0x001011d0                cbuffer_add
- *fill*         0x00101215       0x2b 
+ .text          0x00101010       0xcf arch/i386/keyboard_driver.o
+                0x001010c0                keyboard_init
+ *fill*         0x001010df        0x1 
+ .text          0x001010e0       0xd7 kernel/kernel.o
+                0x001010e0                hang_message
+                0x00101100                kernel_main
+ *fill*         0x001011b7        0x9 
+ .text          0x001011c0       0x7f kernel/cbuffer.o
+                0x001011c0                cbuffer_initialise
+                0x001011e0                cbuffer_add
+                0x00101230                cbuffer_isFull
+ *fill*         0x0010123f        0x1 
  .text          0x00101240      0x3e4 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
                 0x00101240                printf
  *fill*         0x00101624        0xc 
@@ -311,7 +312,7 @@ LOAD arch/i386/crtn.o
  .bss           0x00108d00        0x0 arch/i386/crtn.o
 OUTPUT(zenos.kernel elf32-i386)
 
-.debug_line     0x00000000     0x1a50
+.debug_line     0x00000000     0x1a61
  .debug_line    0x00000000       0x58 arch/i386/crti.o
  .debug_line    0x00000058       0x52 arch/i386/boot.o
  .debug_line    0x000000aa       0x71 arch/i386/port_driver.o
@@ -321,15 +322,15 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_line    0x00000675      0x8dc arch/i386/interrupt_driver.o
  .debug_line    0x00000f51       0xb5 arch/i386/isr.o
  .debug_line    0x00001006       0xbc arch/i386/irq.o
- .debug_line    0x000010c2       0xfd arch/i386/keyboard_driver.o
- .debug_line    0x000011bf       0xc6 kernel/kernel.o
- .debug_line    0x00001285       0x9d kernel/cbuffer.o
- .debug_line    0x00001322      0x45b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_line    0x0000177d       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_line    0x000017f5       0xf5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_line    0x000018ea       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_line    0x00001962       0x98 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_line    0x000019fa       0x56 arch/i386/crtn.o
+ .debug_line    0x000010c2      0x102 arch/i386/keyboard_driver.o
+ .debug_line    0x000011c4       0xc6 kernel/kernel.o
+ .debug_line    0x0000128a       0xa9 kernel/cbuffer.o
+ .debug_line    0x00001333      0x45b /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_line    0x0000178e       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_line    0x00001806       0xf5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_line    0x000018fb       0x78 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_line    0x00001973       0x98 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_line    0x00001a0b       0x56 arch/i386/crtn.o
 
 .debug_line_str
                 0x00000000      0x29f
@@ -353,7 +354,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_line_str
                 0x0000029f       0x31 arch/i386/irq.o
  .debug_line_str
-                0x0000029f      0x121 arch/i386/keyboard_driver.o
+                0x0000029f      0x12b arch/i386/keyboard_driver.o
  .debug_line_str
                 0x0000029f      0x12f kernel/kernel.o
  .debug_line_str
@@ -371,7 +372,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_line_str
                 0x0000029f       0x32 arch/i386/crtn.o
 
-.debug_info     0x00000000     0x28fe
+.debug_info     0x00000000     0x2948
  .debug_info    0x00000000       0x23 arch/i386/crti.o
  .debug_info    0x00000023       0x31 arch/i386/boot.o
  .debug_info    0x00000054       0xa1 arch/i386/port_driver.o
@@ -381,17 +382,17 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_info    0x00000c0c      0xd16 arch/i386/interrupt_driver.o
  .debug_info    0x00001922       0x25 arch/i386/isr.o
  .debug_info    0x00001947       0x25 arch/i386/irq.o
- .debug_info    0x0000196c      0x3a3 arch/i386/keyboard_driver.o
- .debug_info    0x00001d0f      0x256 kernel/kernel.o
- .debug_info    0x00001f65      0x104 kernel/cbuffer.o
- .debug_info    0x00002069      0x4fe /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_info    0x00002567       0xeb /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_info    0x00002652      0x11e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_info    0x00002770       0xb2 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_info    0x00002822       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_info    0x000028db       0x23 arch/i386/crtn.o
+ .debug_info    0x0000196c      0x3d7 arch/i386/keyboard_driver.o
+ .debug_info    0x00001d43      0x256 kernel/kernel.o
+ .debug_info    0x00001f99      0x11a kernel/cbuffer.o
+ .debug_info    0x000020b3      0x4fe /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_info    0x000025b1       0xeb /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_info    0x0000269c      0x11e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_info    0x000027ba       0xb2 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_info    0x0000286c       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_info    0x00002925       0x23 arch/i386/crtn.o
 
-.debug_abbrev   0x00000000      0xfc3
+.debug_abbrev   0x00000000      0xfe4
  .debug_abbrev  0x00000000       0x12 arch/i386/crti.o
  .debug_abbrev  0x00000012       0x28 arch/i386/boot.o
  .debug_abbrev  0x0000003a       0x7b arch/i386/port_driver.o
@@ -401,15 +402,15 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_abbrev  0x000004e5      0x25a arch/i386/interrupt_driver.o
  .debug_abbrev  0x0000073f       0x14 arch/i386/isr.o
  .debug_abbrev  0x00000753       0x14 arch/i386/irq.o
- .debug_abbrev  0x00000767      0x1bc arch/i386/keyboard_driver.o
- .debug_abbrev  0x00000923      0x11d kernel/kernel.o
- .debug_abbrev  0x00000a40       0xb0 kernel/cbuffer.o
- .debug_abbrev  0x00000af0      0x210 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_abbrev  0x00000d00       0xab /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_abbrev  0x00000dab       0xd3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_abbrev  0x00000e7e       0x8e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_abbrev  0x00000f0c       0xa5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_abbrev  0x00000fb1       0x12 arch/i386/crtn.o
+ .debug_abbrev  0x00000767      0x1c4 arch/i386/keyboard_driver.o
+ .debug_abbrev  0x0000092b      0x11d kernel/kernel.o
+ .debug_abbrev  0x00000a48       0xc9 kernel/cbuffer.o
+ .debug_abbrev  0x00000b11      0x210 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_abbrev  0x00000d21       0xab /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_abbrev  0x00000dcc       0xd3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_abbrev  0x00000e9f       0x8e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_abbrev  0x00000f2d       0xa5 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_abbrev  0x00000fd2       0x12 arch/i386/crtn.o
 
 .debug_aranges  0x00000000      0x250
  .debug_aranges
@@ -449,29 +450,29 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_aranges
                 0x00000228       0x28 arch/i386/crtn.o
 
-.debug_str      0x00000000      0x842
- .debug_str     0x00000000      0x842 arch/i386/crti.o
+.debug_str      0x00000000      0x851
+ .debug_str     0x00000000      0x851 arch/i386/crti.o
                                  0x3e (size before relaxing)
- .debug_str     0x00000842       0x45 arch/i386/boot.o
- .debug_str     0x00000842       0x9e arch/i386/port_driver.o
- .debug_str     0x00000842      0x170 arch/i386/gdt.o
- .debug_str     0x00000842       0x43 arch/i386/gdt_flush.o
- .debug_str     0x00000842      0x425 arch/i386/tty.o
- .debug_str     0x00000842      0x341 arch/i386/interrupt_driver.o
- .debug_str     0x00000842       0x3d arch/i386/isr.o
- .debug_str     0x00000842       0x3d arch/i386/irq.o
- .debug_str     0x00000842      0x34d arch/i386/keyboard_driver.o
- .debug_str     0x00000842      0x2b1 kernel/kernel.o
- .debug_str     0x00000842      0x115 kernel/cbuffer.o
- .debug_str     0x00000842      0x170 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_str     0x00000842      0x10e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_str     0x00000842       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_str     0x00000842       0xa3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_str     0x00000842       0x70 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .debug_str     0x00000842       0x3e arch/i386/crtn.o
+ .debug_str     0x00000851       0x45 arch/i386/boot.o
+ .debug_str     0x00000851       0x9e arch/i386/port_driver.o
+ .debug_str     0x00000851      0x170 arch/i386/gdt.o
+ .debug_str     0x00000851       0x43 arch/i386/gdt_flush.o
+ .debug_str     0x00000851      0x425 arch/i386/tty.o
+ .debug_str     0x00000851      0x341 arch/i386/interrupt_driver.o
+ .debug_str     0x00000851       0x3d arch/i386/isr.o
+ .debug_str     0x00000851       0x3d arch/i386/irq.o
+ .debug_str     0x00000851      0x36c arch/i386/keyboard_driver.o
+ .debug_str     0x00000851      0x2b1 kernel/kernel.o
+ .debug_str     0x00000851      0x124 kernel/cbuffer.o
+ .debug_str     0x00000851      0x170 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_str     0x00000851      0x10e /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_str     0x00000851       0xb9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_str     0x00000851       0xa3 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_str     0x00000851       0x70 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_str     0x00000851       0x3e arch/i386/crtn.o
 
 .debug_rnglists
-                0x00000000      0x3bb
+                0x00000000      0x3b8
  .debug_rnglists
                 0x00000000       0x19 arch/i386/crti.o
  .debug_rnglists
@@ -479,11 +480,11 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_rnglists
                 0x0000008c      0x236 arch/i386/interrupt_driver.o
  .debug_rnglists
-                0x000002c2       0x17 arch/i386/keyboard_driver.o
+                0x000002c2       0x14 arch/i386/keyboard_driver.o
  .debug_rnglists
-                0x000002d9       0xc9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x000002d6       0xc9 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_rnglists
-                0x000003a2       0x19 arch/i386/crtn.o
+                0x0000039f       0x19 arch/i386/crtn.o
 
 .comment        0x00000000       0x12
  .comment       0x00000000       0x12 arch/i386/crtbegin.o
@@ -503,7 +504,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .comment       0x00000012       0x13 arch/i386/crtend.o
 
 .debug_loclists
-                0x00000000      0xc8a
+                0x00000000      0xc93
  .debug_loclists
                 0x00000000       0x14 arch/i386/port_driver.o
  .debug_loclists
@@ -513,26 +514,26 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_loclists
                 0x000002a9      0x234 arch/i386/interrupt_driver.o
  .debug_loclists
-                0x000004dd       0x49 arch/i386/keyboard_driver.o
+                0x000004dd       0x52 arch/i386/keyboard_driver.o
  .debug_loclists
-                0x00000526      0x5dc /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x0000052f      0x5dc /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_loclists
-                0x00000b02      0x110 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x00000b0b      0x110 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
  .debug_loclists
-                0x00000c12       0x2c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x00000c1b       0x2c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
  .debug_loclists
-                0x00000c3e       0x4c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x00000c47       0x4c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
 
-.debug_frame    0x00000000      0x560
+.debug_frame    0x00000000      0x56c
  .debug_frame   0x00000000       0x54 arch/i386/port_driver.o
  .debug_frame   0x00000054       0x34 arch/i386/gdt.o
  .debug_frame   0x00000088      0x1c8 arch/i386/tty.o
  .debug_frame   0x00000250       0xc0 arch/i386/interrupt_driver.o
- .debug_frame   0x00000310       0x6c arch/i386/keyboard_driver.o
- .debug_frame   0x0000037c       0x4c kernel/kernel.o
- .debug_frame   0x000003c8       0x4c kernel/cbuffer.o
- .debug_frame   0x00000414       0x54 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .debug_frame   0x00000468       0x38 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .debug_frame   0x000004a0       0x50 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .debug_frame   0x000004f0       0x34 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .debug_frame   0x00000524       0x3c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_frame   0x00000310       0x68 arch/i386/keyboard_driver.o
+ .debug_frame   0x00000378       0x4c kernel/kernel.o
+ .debug_frame   0x000003c4       0x5c kernel/cbuffer.o
+ .debug_frame   0x00000420       0x54 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .debug_frame   0x00000474       0x38 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .debug_frame   0x000004ac       0x50 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .debug_frame   0x000004fc       0x34 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .debug_frame   0x00000530       0x3c /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)

@@ -1,28 +1,50 @@
 #include <stdint.h>
 #include <kernel/cbuffer.h>
 
+
+
+
+
+
 static char buffer[CBUFFER_MAX_SIZE] = {0};
-static char * buffer_ptr = buffer;
-static int head;
-static int tail;
 
 
 
 
-void cbuffer_initialise()
+
+void cbuffer_initialise(cbuffer_t *cbuffer, char *buffer)
 {
-    buffer_ptr = buffer;
-    head = 0;
-    tail = 0;
+	cbuffer->buffer = buffer;
+    cbuffer->write = buffer;
+	cbuffer->read = buffer;
 }
 
-void cbuffer_add(const char c)
-
+uint16_t cbuffer_length(cbuffer_t *cbuffer)
 {
-	buffer[tail] = c;
-	tail = (tail + 1) % CBUFFER_MAX_SIZE;
+	return ((cbuffer->write - cbuffer->read)& (cbuffer->size-1));
+}
 
-	if (tail == head)
-		head = (head + 1) % CBUFFER_MAX_SIZE;
+e_cbuffer_error cbuffer_push(cbuffer_t * cbuffer, const char c)
+{
+	if (cbuffer_length(cbuffer) == (cbuffer->size-1))
+	{
+		return BUFFER_FULL;
+	}
+	else
+	{
+		cbuffer->buffer[cbuffer->write] = c;
+		cbuffer->write = (cbuffer->write +1) & (cbuffer->size-1);
+	}
+
+}
+
+void cbuffer_peek(uint16_t ahead,char* c)
+{
+	return 
+}
+
+char cbuffer_isFull ()
+{
+	return tail == head;
 }
 

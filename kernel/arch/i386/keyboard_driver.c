@@ -6,6 +6,7 @@
 #include <kernel/port_driver.h>
 #include <kernel/tty.h>
 #include <kernel/vga.h>
+#include <kernel/cbuffer.h>
 
 #define IRQ1 33
 
@@ -73,6 +74,7 @@ static void keyboard_callback(registers_t *regs) {
             if (scancode < 128)
             {
                 unsigned char c = key_map[scancode+( isShift * 0x80)];
+                cbuffer_add(c);
                 terminal_putchar(c);
             }
         break;
@@ -83,6 +85,7 @@ static void keyboard_callback(registers_t *regs) {
 
 void keyboard_init()
 {
+    cbuffer_initialise();
     register_interrupt_handler(IRQ1, keyboard_callback);
 }
 
