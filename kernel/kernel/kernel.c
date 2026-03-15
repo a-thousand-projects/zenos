@@ -28,10 +28,7 @@ void kernel_main(void) {
 
 	printf("Initalising Keyboard Controller");
 	keyboard_init();
-	printf(" [OK]\n");
-
-	printf("Initializing Shell Buffer");
-	cbuffer_initialise();
+	
 	printf(" [OK]\n");
 
 	asm volatile("sti");

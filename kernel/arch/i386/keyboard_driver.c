@@ -8,6 +8,8 @@
 #include <kernel/vga.h>
 #include <kernel/cbuffer.h>
 
+circular_buffer keyboard_buffer;
+
 #define IRQ1 33
 
 #define KEY_SHIFT_DOWN 0x2a
@@ -74,7 +76,7 @@ static void keyboard_callback(registers_t *regs) {
             if (scancode < 128)
             {
                 unsigned char c = key_map[scancode+( isShift * 0x80)];
-                cbuffer_add(c);
+                cbuffer_put(&keyboard_buffer,c);
                 terminal_putchar(c);
             }
         break;
@@ -85,7 +87,7 @@ static void keyboard_callback(registers_t *regs) {
 
 void keyboard_init()
 {
-    cbuffer_initialise();
+    cbuffer_initialize(&keyboard_buffer);
     register_interrupt_handler(IRQ1, keyboard_callback);
 }
 
