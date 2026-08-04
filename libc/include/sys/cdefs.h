@@ -3,4 +3,6 @@
 
 #define __zenos_libc 1
 
+#define NULL 0x0
+
 #endif

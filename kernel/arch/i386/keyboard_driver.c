@@ -6,17 +6,23 @@
 #include <kernel/port_driver.h>
 #include <kernel/tty.h>
 #include <kernel/vga.h>
+#include <kernel/cbuffer.h>
+
+circular_buffer_t *current_buffer;
 
 #define IRQ1 33
 
+#define KEY_PORT 0x60
+
 #define KEY_SHIFT_DOWN 0x2a
 #define KEY_SHIFT_UP   0xaa
+#define KEY_RETURN     0x0D 
 
 int isShift = 0;
                         //   0      1        2       3       4       5       6       7       8       9
 static char key_map[256] = { 0   ,  0    ,  '1'  ,  '2'  ,  '3'  ,  '4'  ,  '5'  ,  '6'  ,  '7'  ,  '8'  , // 0x09
                             '9'  ,  '0'  ,  '-'  ,  '='  ,  0    ,  0    ,  'q'  ,  'w'  ,  'e'  ,  'r'  , // 0x13
-                            't'  ,  'y'  ,  'u'  ,  'i'  ,  'o'  ,  'p'  ,  '['  ,  ']'  ,  0    ,  0    , // 0x1D
+                            't'  ,  'y'  ,  'u'  ,  'i'  ,  'o'  ,  'p'  ,  '['  ,  ']'  ,  KEY_RETURN    ,  0    , // 0x1D
                             'a'  ,  's'  ,  'd'  ,  'f'  ,  'g'  ,  'h'  ,  'j'  ,  'k'  ,  'l'  ,  ';'  , // 0x27
                             '\'' ,  '`'  ,  0    ,  '#'  ,  'z'  ,  'x'  ,  'c'  ,  'v'  ,  'b'  ,  'n'  , // 0x31
                             'm'  ,  ','  ,  '.'  ,  '/'  ,   0   ,   0   ,   0   ,   0   ,   0    ,  0   , // 0x3B
@@ -53,23 +59,35 @@ static char isLetter(const char c)
 
 static void keyboard_callback(registers_t *regs) {
 
-    unsigned char scancode = port_byte_in(0x60);
+    unsigned char scancode = port_byte_in(KEY_PORT);
     //printf("Code: %x\n",scancode);
     switch (scancode)
     {
         case KEY_SHIFT_DOWN :
             isShift = 1;
+            terminal_cursor_type(CURSOR_SHIFT);
+            terminal_cursor_enable();
             terminal_putentryat('S',VGA_COLOR_LIGHT_CYAN,79,24);
         break;
         case (KEY_SHIFT_UP):
             isShift = 0;
+            terminal_cursor_type(CURSOR_DEFAULT);
+            terminal_cursor_enable();
             terminal_putentryat(' ',VGA_COLOR_LIGHT_CYAN,79,24);
         break;
         default:
             if (scancode < 128)
             {
                 unsigned char c = key_map[scancode+( isShift * 0x80)];
-                terminal_putchar(c);
+                if (c!=0)
+                {
+                    cbuffer_put(current_buffer,c);
+                    
+                    terminal_putchar(c);
+                }
+                
+            
+
             }
         break;
     }
@@ -77,8 +95,10 @@ static void keyboard_callback(registers_t *regs) {
 //    printf("Keyboard interrupt received! [%x]\n", scancode); 
 }
 
-void keyboard_init()
+void keyboard_init(circular_buffer_t *cbuffer)
 {
+    current_buffer = cbuffer;
+    cbuffer_initialize(cbuffer);
     register_interrupt_handler(IRQ1, keyboard_callback);
 }
 

@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <kernel/tty.h>
 #include <kernel/vga.h>
 #include <kernel/interrupt_driver.h>
 #include <kernel/keyboard_driver.h>
-#include <kernel/cbuffer.h>
+#include <kernel/terminal.h>
 
 extern void gdt_install();
 
@@ -26,12 +27,9 @@ void kernel_main(void) {
 	install_interrupts();
 	printf(" [OK]\n");
 
-	printf("Initalising Keyboard Controller");
-	keyboard_init();
-	printf(" [OK]\n");
-
-	printf("Initializing Shell Buffer");
-	cbuffer_initialise();
+	printf("Initalising User Terminal");
+	terminal_init();
+	
 	printf(" [OK]\n");
 
 	asm volatile("sti");
@@ -42,9 +40,12 @@ void kernel_main(void) {
 	printf("**************************\n\r");
 
 
+	
 	while(1)
 	{
 		for (int a=0;a<0xffff;a++);
+		// check the last key entered into the buffer
+
 	};
 
 }
