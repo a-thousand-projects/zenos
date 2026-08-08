@@ -16,11 +16,12 @@ typedef struct
 } circular_buffer_t;
 
 void cbuffer_initialize(circular_buffer_t *cbuffer);
-void cbuffer_put(circular_buffer_t *cbuffer, uint8_t data);
+void cbuffer_put(circular_buffer_t *cbuffer, uint16_t data);
 uint8_t cbuffer_get(circular_buffer_t *cbuffer);
 uint8_t cbuffer_data_available(circular_buffer_t *cbuffer);
 uint8_t cbuffer_is_empty(circular_buffer_t *cbuffer);
 uint8_t cbuffer_is_full(circular_buffer_t *cbuffer);
 uint8_t cbuffer_peek(circular_buffer_t *cbuffer);
-uint8_t cbuffer_find(circular_buffer_t *cbuffer,uint8_t chr);
+unsigned char cbuffer_find(circular_buffer_t *cbuffer,const uint16_t chr);
+uint8_t cbuffer_first_to_CR(circular_buffer_t *cbuffer,char *data,uint8_t len);
 #endif
