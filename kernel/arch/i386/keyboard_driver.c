@@ -16,11 +16,11 @@ circular_buffer_t *current_buffer;
 
 #define KEY_SHIFT_DOWN 0x2a
 #define KEY_SHIFT_UP   0xaa
-#define KEY_RETURN     0x0D 
+#define KEY_RETURN     0x0A0D 
 
 int isShift = 0;
                         //   0      1        2       3       4       5       6       7       8       9
-static char key_map[256] = { 0   ,  0    ,  '1'  ,  '2'  ,  '3'  ,  '4'  ,  '5'  ,  '6'  ,  '7'  ,  '8'  , // 0x09
+static int16_t key_map[256] = { 0   ,  0    ,  '1'  ,  '2'  ,  '3'  ,  '4'  ,  '5'  ,  '6'  ,  '7'  ,  '8'  , // 0x09
                             '9'  ,  '0'  ,  '-'  ,  '='  ,  0    ,  0    ,  'q'  ,  'w'  ,  'e'  ,  'r'  , // 0x13
                             't'  ,  'y'  ,  'u'  ,  'i'  ,  'o'  ,  'p'  ,  '['  ,  ']'  ,  KEY_RETURN    ,  0    , // 0x1D
                             'a'  ,  's'  ,  'd'  ,  'f'  ,  'g'  ,  'h'  ,  'j'  ,  'k'  ,  'l'  ,  ';'  , // 0x27
@@ -78,16 +78,12 @@ static void keyboard_callback(registers_t *regs) {
         default:
             if (scancode < 128)
             {
-                unsigned char c = key_map[scancode+( isShift * 0x80)];
+                uint16_t c = key_map[scancode+( isShift * 0x80)];
                 if (c!=0)
                 {
                     cbuffer_put(current_buffer,c);
-                    
                     terminal_putchar(c);
                 }
-                
-            
-
             }
         break;
     }
