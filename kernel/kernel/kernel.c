@@ -5,7 +5,8 @@
 #include <kernel/vga.h>
 #include <kernel/interrupt_driver.h>
 #include <kernel/keyboard_driver.h>
-#include <kernel/terminal.h>
+#include <kernel/shell.h>
+#include <kernel/eventqueue.h>
 
 extern void gdt_install();
 
@@ -21,25 +22,29 @@ void kernel_main(void) {
 
 	printf("Initializing GDT");
 	gdt_install();
-	printf(" [OK]\n");
+	printf(" [OK]\n\r");
 
-	printf("Installing Inetrrupts");
+	printf("Installing Inetrrupts\n\r");
 	install_interrupts();
-	printf(" [OK]\n");
+	printf(" [OK]\n\r");
 
-	printf("Initalising User Terminal");
-	terminal_init();
+	printf("Initializing Event Queue\n\r");
+	event_queue_init();
+	printf(" [OK]\n\r");
+
+	printf("Initalising User Terminal\n\r");
+	shell_init();
 	
-	printf(" [OK]\n");
+	printf(" [OK]\n\r");
 
 	asm volatile("sti");
 
 	terminal_setcolor(VGA_COLOR_LIGHT_BROWN);
 	printf("**************************\n\r");
-	printf("* Zenos - Experimental OS*\n");
+	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
 
-
+	shell_run();
 	
 	while(1)
 	{
