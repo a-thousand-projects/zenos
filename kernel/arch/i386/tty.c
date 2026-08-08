@@ -61,12 +61,24 @@ void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y) {
 	terminal_buffer[index] = vga_char(c, color);
 }
 
-void terminal_putchar(char c) {
+void terminal_putchar(uint16_t c) {
 	unsigned char uc = c;
-	if (c == '\n') {
+	if (c== '\n\r' || c== '\r\n') {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT)
-			terminal_row = 0;
+		{
+			terminal_row = 0; // Todo: screen must scroll if allowed 
+		}
+			terminal_cursor_put(terminal_column,terminal_row);
+		return;
+	}
+	if (c=='\n')
+	{
+		if (++terminal_row == VGA_HEIGHT)
+		{
+			terminal_row = 0; // Todo: screen must scroll if allowed
+		}
+		terminal_cursor_put(terminal_column,terminal_row);
 		return;
 	}
 	if (c == '\r') {
