@@ -18,9 +18,6 @@ char event_queue_has_data()
     return (write_index - read_index)>0;
 } 
 
-void event_queue_add(event_queue_item_t item)
-{
 
-}
 
 
