@@ -49,10 +49,9 @@ unsigned char cbuffer_find(circular_buffer_t *cbuffer,const uint16_t chr)
 {
     uint8_t read_index = cbuffer->read_index;
     unsigned char data = 0x0;
-    
     while (read_index != cbuffer->write_index && chr != data)
     {
-        uint8_t data = cbuffer->buffer[read_index];
+        data = cbuffer->buffer[read_index];
         read_index = (read_index+1) % BUFFER_SIZE;
     }
     
@@ -66,8 +65,8 @@ uint8_t cbuffer_peek(circular_buffer_t *cbuffer)
     {
         return 0x0;  // or handle error
     }
-
-    uint8_t data = cbuffer->buffer[cbuffer->read_index];
+    int index = (cbuffer->write_index -1)  % BUFFER_SIZE;
+    uint8_t data = cbuffer->buffer[index];
     
     return data;
 }
