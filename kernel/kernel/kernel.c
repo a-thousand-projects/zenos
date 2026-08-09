@@ -8,6 +8,9 @@
 #include <kernel/shell.h>
 #include <kernel/eventqueue.h>
 
+// For TESTING
+#include <kernel/pmm.h>
+
 extern void gdt_install();
 
 // https://littleosbook.github.io/#interrupts-and-input
@@ -43,6 +46,10 @@ void kernel_main(void) {
 	printf("**************************\n\r");
 	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
+
+	// test ONLY
+	pmm_init();
+	// END TEST
 
 	shell_run();
 	
