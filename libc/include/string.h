@@ -15,6 +15,7 @@ void* memmove(void*, const void*, size_t);
 void* memset(void*, int, size_t);
 size_t strlen(const char*);
 void reverse(char str[], int length);
+int strncmp(const char *s1, const char *s2, register size_t n);
 
 #ifdef __cplusplus
 }
