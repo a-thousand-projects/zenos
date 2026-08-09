@@ -21,4 +21,5 @@ void terminal_cursor_put(int x, int y);
 void terminal_cursor_enable();
 void terminal_cursor_disable();
 void terminal_cursor_type(e_cursor_type cursor);
+void terminal_clear(void);
 #endif
