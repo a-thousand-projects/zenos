@@ -33,6 +33,9 @@ kernel/eventqueue.o \
 kernel/kernel.o \
 kernel/cbuffer.o \
 kernel/shell.o \
+kernel/command.o\
+kernel/commands/version.o \
+kernel/commands/tty_commands.o \
 
 
 OBJS=\
