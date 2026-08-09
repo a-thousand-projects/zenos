@@ -7,12 +7,20 @@
             "request": "launch",
             "program": "${workspaceFolder}/kernel/zenos.kernel",
             "miDebuggerServerAddress": "localhost:1234",
-           // "miDebuggerPath": "/usr/bin/i686-elf-gdb",
-           "miDebuggerPath": "/usr/bin/gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "externalConsole": false,
-            "MIMode": "gdb"
+            "MIMode": "gdb",
+            "preLaunchTask": "Run QEMU (debug)",
+            "postDebugTask": "Stop QEMU",
+            "setupCommands": [
+                {
+                    "description": "Set architecture to i386",
+                    "text": "set architecture i386",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
