@@ -37,6 +37,7 @@ kernel/command.o\
 kernel/commands/version.o \
 kernel/commands/tty_commands.o \
 kernel/pmm/pmm.o \
+kernel/pmm/pmm_tests.o \
 
 
 OBJS=\

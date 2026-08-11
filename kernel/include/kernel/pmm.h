@@ -16,6 +16,7 @@ zenos_err_t pmm_free_page(uint32_t page);
 char pmm_page_status(uint32_t page);
 zenos_err_t pmm_set_page(uint32_t page);
 void pmm_print(void);
+void pmm_test();
 
 
 #endif //ZENOS_PMM_H
