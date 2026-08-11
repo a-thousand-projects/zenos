@@ -13,6 +13,8 @@ EXEC_PREFIX?=$(PREFIX)
 BOOTDIR?=$(EXEC_PREFIX)/boot
 INCLUDEDIR?=$(PREFIX)/include
 
+BUILDDIR?=../build/kernel
+
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
 CPPFLAGS:=$(CPPFLAGS) -D__is_kernel -Iinclude
 LDFLAGS:=$(LDFLAGS)
@@ -47,37 +49,41 @@ $(KERNEL_OBJS) \
 $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
 
+BOBJS=$(addprefix $(BUILDDIR)/,$(OBJS))
+BKERNEL_OBJS=$(addprefix $(BUILDDIR)/,$(KERNEL_OBJS))
+
 LINK_LIST=\
 $(LDFLAGS) \
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
+$(BUILDDIR)/$(ARCHDIR)/crti.o \
+$(BUILDDIR)/$(ARCHDIR)/crtbegin.o \
+$(BKERNEL_OBJS) \
 $(LIBS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
+$(BUILDDIR)/$(ARCHDIR)/crtend.o \
+$(BUILDDIR)/$(ARCHDIR)/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
-.SUFFIXES: .o .c .S
 
-all: zenos.kernel
+all: $(BUILDDIR)/zenos.kernel
 
-zenos.kernel: $(OBJS) $(ARCHDIR)/linker.ld
-	$(CC) -T $(ARCHDIR)/linker.ld -Wl,-Map,zenos.map -o $@ $(CFLAGS) $(LINK_LIST)
-	grub-file --is-x86-multiboot zenos.kernel
+$(BUILDDIR)/zenos.kernel: $(BOBJS) $(ARCHDIR)/linker.ld
+	@mkdir -p $(@D)
+	$(CC) -T $(ARCHDIR)/linker.ld -Wl,-Map,$(BUILDDIR)/zenos.map -o $@ $(CFLAGS) $(LINK_LIST)
+	grub-file --is-x86-multiboot $@
 
-$(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
+$(BUILDDIR)/$(ARCHDIR)/crtbegin.o $(BUILDDIR)/$(ARCHDIR)/crtend.o:
+	@mkdir -p $(@D)
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
-.c.o:
+$(BUILDDIR)/%.o: %.c
+	@mkdir -p $(@D)
 	$(CC) -MD -c  $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 
-.S.o:
+$(BUILDDIR)/%.o: %.S
+	@mkdir -p $(@D)
 	$(CC) -MD -c  $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
 clean:
-	rm -f zenos.kernel
-	rm -f $(OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
+	rm -rf $(BUILDDIR)
 
 install: install-headers install-kernel
 
@@ -85,8 +91,8 @@ install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
 	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
-install-kernel: zenos.kernel
+install-kernel: $(BUILDDIR)/zenos.kernel
 	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp zenos.kernel $(DESTDIR)$(BOOTDIR)
+	cp $(BUILDDIR)/zenos.kernel $(DESTDIR)$(BOOTDIR)
 
--include $(OBJS:.o=.d)
+-include $(BOBJS:.o=.d)
