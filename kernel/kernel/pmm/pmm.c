@@ -58,7 +58,7 @@ zenos_err_t pmm_free_page(uint32_t page)
 
 char pmm_page_status(uint32_t page)
 {
-    return page_bitmap && (1 << page);
+    return (page_bitmap && (1 << page))>0;
 }
 
 zenos_err_t pmm_set_page(uint32_t page)
