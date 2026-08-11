@@ -13,6 +13,8 @@ EXEC_PREFIX?=$(PREFIX)
 INCLUDEDIR?=$(PREFIX)/include
 LIBDIR?=$(EXEC_PREFIX)/lib
 
+BUILDDIR?=../build/libc
+
 CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
 CPPFLAGS:=$(CPPFLAGS) -D__is_libc -Iinclude
 LIBK_CFLAGS:=$(CFLAGS)
@@ -51,36 +53,42 @@ $(HOSTEDOBJS) \
 
 LIBK_OBJS=$(FREEOBJS:.o=.libk.o)
 
-#BINARIES=libc.a libk.a # Not ready for libc yet.
-BINARIES=libk.a
+BOBJS=$(addprefix $(BUILDDIR)/,$(OBJS))
+BLIBK_OBJS=$(addprefix $(BUILDDIR)/,$(LIBK_OBJS))
+
+#BINARIES=$(BUILDDIR)/libc.a $(BUILDDIR)/libk.a # Not ready for libc yet.
+BINARIES=$(BUILDDIR)/libk.a
 
 .PHONY: all clean install install-headers install-libs
-.SUFFIXES: .o .libk.o .c .S
 
 all: $(BINARIES)
 
-libc.a: $(OBJS)
-	$(AR) rcs $@ $(OBJS)
+$(BUILDDIR)/libc.a: $(BOBJS)
+	@mkdir -p $(@D)
+	$(AR) rcs $@ $(BOBJS)
 
-libk.a: $(LIBK_OBJS)
-	$(AR) rcs $@ $(LIBK_OBJS)
+$(BUILDDIR)/libk.a: $(BLIBK_OBJS)
+	@mkdir -p $(@D)
+	$(AR) rcs $@ $(BLIBK_OBJS)
 
-.c.o:
+$(BUILDDIR)/%.o: %.c
+	@mkdir -p $(@D)
 	$(CC) -MD -c $< -o $@ -std=gnu11 $(CFLAGS) $(CPPFLAGS)
 
-.c.S:
+$(BUILDDIR)/%.o: %.S
+	@mkdir -p $(@D)
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
-.c.libk.o:
+$(BUILDDIR)/%.libk.o: %.c
+	@mkdir -p $(@D)
 	$(CC) -MD -c $< -o $@ -std=gnu11 $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
 
-.S.libk.o:
+$(BUILDDIR)/%.libk.o: %.S
+	@mkdir -p $(@D)
 	$(CC) -MD -c $< -o $@ $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
 
 clean:
-	rm -f $(BINARIES) *.a
-	rm -f $(OBJS) $(LIBK_OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) $(LIBK_OBJS:.o=.d) *.d */*.d */*/*.d
+	rm -rf $(BUILDDIR)
 
 install: install-headers install-libs
 
@@ -92,5 +100,5 @@ install-libs: $(BINARIES)
 	mkdir -p $(DESTDIR)$(LIBDIR)
 	cp $(BINARIES) $(DESTDIR)$(LIBDIR)
 
--include $(OBJS:.o=.d)
--include $(LIBK_OBJS:.o=.d)
+-include $(BOBJS:.o=.d)
+-include $(BLIBK_OBJS:.o=.d)
