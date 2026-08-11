@@ -40,6 +40,8 @@ LOAD kernel/shell.o
 LOAD kernel/command.o
 LOAD kernel/commands/version.o
 LOAD kernel/commands/tty_commands.o
+LOAD kernel/pmm/pmm.o
+LOAD kernel/pmm/pmm_tests.o
 LOAD /home/graeme/source/zenos/sysroot/usr/lib/libk.a
 LOAD /home/graeme/opt/cross-i686-v16_2/lib/gcc/i686-elf/16.2.0/libgcc.a
 LOAD arch/i386/crtend.o
@@ -235,9 +237,9 @@ LOAD arch/i386/crtn.o
  .eh_frame      0x001022a4        0x0 arch/i386/crtbegin.o
  .eh_frame      0x001022a4        0x4 arch/i386/crtend.o
 
-.rodata.str1.1  0x001022a8      0x2bc
+.rodata.str1.1  0x001022a8      0x383
  .rodata.str1.1
-                0x001022a8      0x2bc arch/i386/tty.o
+                0x001022a8      0x383 arch/i386/tty.o
                                   0x3 (size before relaxing)
  .rodata.str1.1
                 0x00102564        0x0 arch/i386/interrupt_driver.o
@@ -255,18 +257,18 @@ LOAD arch/i386/crtn.o
                 0x00102564        0x0 kernel/commands/version.o
                                   0xd (size before relaxing)
 
-.rodata.str1.4  0x00102564       0x48
+.rodata.str1.4  0x0010262c       0x48
  .rodata.str1.4
-                0x00102564       0x48 arch/i386/interrupt_driver.o
+                0x0010262c       0x48 arch/i386/interrupt_driver.o
                                  0x1f (size before relaxing)
  .rodata.str1.4
                 0x001025ac        0x0 kernel/kernel.o
                                  0x28 (size before relaxing)
 
-.rel.dyn        0x001025ac        0x0
- .rel.got       0x001025ac        0x0 arch/i386/crti.o
- .rel.iplt      0x001025ac        0x0 arch/i386/crti.o
- .rel.text      0x001025ac        0x0 arch/i386/crti.o
+.rel.dyn        0x00102674        0x0
+ .rel.got       0x00102674        0x0 arch/i386/crti.o
+ .rel.iplt      0x00102674        0x0 arch/i386/crti.o
+ .rel.text      0x00102674        0x0 arch/i386/crti.o
 
 .data           0x00103000      0x100
  *(.data)
@@ -294,6 +296,8 @@ LOAD arch/i386/crtn.o
                 0x001030a0                command_list
  .data          0x00103100        0x0 kernel/commands/version.o
  .data          0x00103100        0x0 kernel/commands/tty_commands.o
+ .data          0x00103100        0x0 kernel/pmm/pmm.o
+ .data          0x00103100        0x0 kernel/pmm/pmm_tests.o
  .data          0x00103100        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .data          0x00103100        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .data          0x00103100        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
@@ -358,14 +362,16 @@ LOAD arch/i386/crtn.o
  .bss           0x00109784        0x0 kernel/command.o
  .bss           0x00109784        0x0 kernel/commands/version.o
  .bss           0x00109784        0x0 kernel/commands/tty_commands.o
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
- .bss           0x00109784        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strncmp.libk.o)
- .bss           0x00109784        0x0 arch/i386/crtend.o
- .bss           0x00109784        0x0 arch/i386/crtn.o
+ .bss           0x00109784        0x4 kernel/pmm/pmm.o
+ .bss           0x00109788        0x0 kernel/pmm/pmm_tests.o
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .bss           0x00109788        0x0 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strncmp.libk.o)
+ .bss           0x00109788        0x0 arch/i386/crtend.o
+ .bss           0x00109788        0x0 arch/i386/crtn.o
 OUTPUT(zenos.kernel elf32-i386)
 
 .debug_line     0x00000000     0x226f
@@ -521,7 +527,7 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_abbrev  0x0000162a       0x92 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strncmp.libk.o)
  .debug_abbrev  0x000016bc       0x12 arch/i386/crtn.o
 
-.debug_aranges  0x00000000      0x310
+.debug_aranges  0x00000000      0x350
  .debug_aranges
                 0x00000000       0x28 arch/i386/crti.o
  .debug_aranges
@@ -557,19 +563,23 @@ OUTPUT(zenos.kernel elf32-i386)
  .debug_aranges
                 0x00000208       0x20 kernel/commands/tty_commands.o
  .debug_aranges
-                0x00000228       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
+                0x00000228       0x20 kernel/pmm/pmm.o
  .debug_aranges
-                0x00000248       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
+                0x00000248       0x20 kernel/pmm/pmm_tests.o
  .debug_aranges
-                0x00000268       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
+                0x00000268       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(printf.libk.o)
  .debug_aranges
-                0x00000288       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
+                0x00000288       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(putchar.libk.o)
  .debug_aranges
-                0x000002a8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+                0x000002a8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(citoa.libk.o)
  .debug_aranges
-                0x000002c8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strncmp.libk.o)
+                0x000002c8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strlen.libk.o)
  .debug_aranges
-                0x000002e8       0x28 arch/i386/crtn.o
+                0x000002e8       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strrev.libk.o)
+ .debug_aranges
+                0x00000308       0x20 /home/graeme/source/zenos/sysroot/usr/lib/libk.a(strncmp.libk.o)
+ .debug_aranges
+                0x00000328       0x28 arch/i386/crtn.o
 
 .debug_str      0x00000000      0xaa4
  .debug_str     0x00000000      0xaa4 arch/i386/crti.o

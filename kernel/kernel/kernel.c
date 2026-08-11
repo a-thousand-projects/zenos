@@ -7,6 +7,10 @@
 #include <kernel/keyboard_driver.h>
 #include <kernel/shell.h>
 #include <kernel/eventqueue.h>
+#include <kernel/pmm.h>
+
+// For TESTING
+#include <kernel/pmm_tests.h>
 
 extern void gdt_install();
 
@@ -43,6 +47,11 @@ void kernel_main(void) {
 	printf("**************************\n\r");
 	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
+
+	pmm_init();
+	// test ONLY
+	pmm_run_tests();
+	// END TEST
 
 	shell_run();
 	
