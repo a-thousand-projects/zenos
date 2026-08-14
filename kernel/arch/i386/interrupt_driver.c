@@ -89,14 +89,13 @@ void isr_handler(registers_t *r) {
 }
 
 void set_idt_gate(int n, uint32_t handler) {
-    idt[n].low_offset = low_16(handler);
-    idt[n].selector = 0x08; // see GDT
-    //----------------------------------//
-    idt[n].always0 = 0;
-    // 0x8E = 1  00 0 1  110
-    //        P DPL 0 D Type
-    idt[n].flags = 0x8E; // Sets as Gate Type
-    idt[n].high_offset = high_16(handler);
+    idt[n].low_offset   = handler & 0xFFFF;
+    idt[n].selector     = 0x08; // see GDT
+    idt[n].ist          = 0;
+    idt[n].flags        = 0x8E;
+    idt[n].offset_mid   = (handler >> 16) & 0xFFFF;
+    idt[n].offset_high  = 0;
+    idt[n].reserved     = 0;
 }
     
 

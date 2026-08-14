@@ -23,9 +23,11 @@ typedef struct {
 typedef struct {
     uint16_t low_offset;
     uint16_t selector;
-    uint8_t always0;
+    uint8_t ist;
     uint8_t flags;
-    uint16_t high_offset;
+    uint16_t offset_mid;
+    uint32_t offset_high;
+    uint32_t reserved;
 } __attribute__((packed)) idt_gate_t;
 
 typedef void (*isr_t)(registers_t *);
