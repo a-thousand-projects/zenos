@@ -33,6 +33,7 @@ KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/eventqueue.o \
 kernel/kernel.o \
+kernel/cpuid.o \
 kernel/cbuffer.o \
 kernel/shell.o \
 kernel/command.o\
@@ -45,9 +46,10 @@ kernel/pmm/pmm_tests.o \
 OBJS=\
 $(ARCHDIR)/crti.o \
 $(ARCHDIR)/crtbegin.o \
-$(KERNEL_OBJS) \
 $(ARCHDIR)/crtend.o \
 $(ARCHDIR)/crtn.o \
+$(KERNEL_OBJS) \
+
 
 BOBJS=$(addprefix $(BUILDDIR)/,$(OBJS))
 BKERNEL_OBJS=$(addprefix $(BUILDDIR)/,$(KERNEL_OBJS))
