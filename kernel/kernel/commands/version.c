@@ -3,5 +3,6 @@
 int cmd_version(char * command)
 {
     printf("%s\n\r",version_string);
+    return 0;
 }
 

@@ -13,10 +13,10 @@
 // For TESTING
 #include <kernel/pmm_tests.h>
 
-extern void gdt_install();
+
 extern uint32_t multiboot_magic;
 extern uint32_t multiboot_ptr;
-extern idt_gate_t idt[256];
+
 #define   MAGIC_NUMBER 0x2BADB002
 
 // https://littleosbook.github.io/#interrupts-and-input
@@ -40,12 +40,6 @@ void kernel_main(void) {
 
 	check_long_mode_support();
 
-	printf("Initializing GDT");
-	gdt_install();
-	printf(" [OK]\n\r");
-
-	printf("Installing Inetrrupts\n\r");
-	install_interrupts();
 	asm volatile("cli");     // Disable Interrupts for now
 
 	printf(" [OK]\n\r");
@@ -55,18 +49,17 @@ void kernel_main(void) {
 	printf(" [OK]\n\r");
 
 	printf("Initalising User Terminal\n\r");
-	shell_init();
-	
+	// shell_init();
 	printf(" [OK]\n\r");
 
-	//asm volatile("sti");
+
 
 	terminal_setcolor(VGA_COLOR_LIGHT_BROWN);
 	printf("**************************\n\r");
 	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
 
-	 shell_run();
+	// shell_run();
 
 	while(1)
 	{

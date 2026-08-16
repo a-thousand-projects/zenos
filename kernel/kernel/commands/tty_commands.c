@@ -2,4 +2,5 @@
 int cmd_tty_clear(char * command)
 {
     terminal_clear();
+    return 0;
 }
