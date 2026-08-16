@@ -3,27 +3,21 @@
 //
 
 .global cpuid
-.code32
+
 cpuid:
-    push %ebp
-    movl %esp, %ebp
-    push %ebx               # callee-saved; cpuid overwrites it, must restore before returning
-    push %edi               # callee-saved; used below as a scratch pointer register
+    push %rbx
+    movq %rdx, %r10         # save ebx_out ptr - cpuid is about to clobber rdx
+    movq %rcx, %r11         # save ecx_out ptr - cpuid is about to clobber rcx
 
-    movl 8(%ebp), %eax       # leaf argument
+    movl %edi, %eax        # leaf argument, passed in rdi per SysV convention
     cpuid
-    movl  12(%ebp), %edi    # &eax_out
-    movl  %eax, (%edi)
-    movl  16(%ebp), %edi    # &ebx_out
-    movl  %ebx, (%edi)
-    movl  20(%ebp), %edi    # &ecx_out
-    movl  %ecx, (%edi)
-    movl  24(%ebp), %edi    # &edx_out
-    movl  %edx, (%edi)
 
-    pop   %edi
-    pop   %ebx
-    pop   %ebp
+    movl %eax, (%rsi)        # eax_out (rsi untouched by cpuid, safe to use directly)
+    movl %ebx, (%r10)
+    movl %ecx, (%r11)
+    movl %edx, (%r8)        # edx_out (r8 untouched by cpuid, safe to use directly)
+
+    pop %rbx
     ret
 
 

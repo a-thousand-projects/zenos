@@ -160,9 +160,8 @@ long_mode_start:
     movw %ax, %fs
     movw %ax, %gs
 
-    movq $0xb8000, %rdi                      # Put VGA Base Address into di
-    movq $0x2f36, (%rdi)                     # write '6' White on green
-    movq $0x2f34, 2(%rdi)                    # write '4' White on green to next address
+    call _init
+    call kernel_main
 
     cli                                      # Disable interrupts
  1: hlt                                      # Halt the process

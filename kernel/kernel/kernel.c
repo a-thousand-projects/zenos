@@ -17,7 +17,7 @@
 extern uint32_t multiboot_magic;
 extern uint32_t multiboot_ptr;
 
-#define   MAGIC_NUMBER 0x2BADB002
+#define   MAGIC_NUMBER 0x36D76289
 
 // https://littleosbook.github.io/#interrupts-and-input
 
