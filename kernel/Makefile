@@ -70,7 +70,7 @@ all: $(BUILDDIR)/zenos.kernel
 $(BUILDDIR)/zenos.kernel: $(BOBJS) $(ARCHDIR)/linker.ld
 	@mkdir -p $(@D)
 	$(CC) -T $(ARCHDIR)/linker.ld -Wl,-Map,$(BUILDDIR)/zenos.map -o $@ $(CFLAGS) $(LINK_LIST)
-	grub-file --is-x86-multiboot $@
+	grub-file --is-x86-multiboot2 $@
 
 $(BUILDDIR)/$(ARCHDIR)/crtbegin.o $(BUILDDIR)/$(ARCHDIR)/crtend.o:
 	@mkdir -p $(@D)

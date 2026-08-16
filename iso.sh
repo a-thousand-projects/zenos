@@ -9,7 +9,7 @@ mkdir -p isodir/boot/grub
 cp sysroot/boot/zenos.kernel isodir/boot/zenos.kernel
 cat > isodir/boot/grub/grub.cfg << EOF
 menuentry "zenos" {
-	multiboot /boot/zenos.kernel
+	multiboot2 /boot/zenos.kernel
 }
 EOF
 grub-mkrescue -o zenos.iso isodir

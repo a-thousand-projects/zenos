@@ -1,18 +1,35 @@
 # Declare constants for the multiboot header.
-.set ALIGN,    1<<0             # align loaded modules on page boundaries
-.set MEMINFO,  1<<1             # provide memory map
-.set FLAGS,    ALIGN | MEMINFO  # this is the Multiboot 'flag' field
-.set MAGIC_NUMBER,    0x1BADB002       # 'magic number' lets bootloader find the header
-.set CHECKSUM, -(MAGIC_NUMBER + FLAGS) # checksum of above, to prove we are multiboot
+.set FLAG_ALIGN,    1<<0                                # align loaded modules on page boundaries
+.set FLAG_MEMINFO,  1<<1                                # provide memory map
+.set FLAG_NONE,     0                                   # No Flags
+.set FLAGS,         FLAG_NONE                                     # this is the Multiboot 'flag' field
+.set MAGIC_NUMBER,    0xE85250D6                        # 'magic number' lets bootloader2 find the header
+.set CHECKSUM, -(MAGIC_NUMBER + FLAGS + (multiboot2_header_end - multiboot2_header_start))    # checksum of above, to prove we are multiboot
 
-# Declare a header as in the Multiboot Standard.
+## NOTE
+## FLAGS =  architecture: 0 = i386/protected mode
+
+#############################
+# Declare Multiboot 2 header
+#############################
 .section .multiboot
-.align 4
-.long MAGIC_NUMBER
-.long FLAGS
-.long CHECKSUM
+.align 8
+multiboot2_header_start:
+    .long MAGIC_NUMBER
+    .long FLAGS
+    .long multiboot2_header_end - multiboot2_header_start     # Header Length
+    .long CHECKSUM
 
+    # End tag
+    .align  8
+    .word   0
+    .word   0
+    .long   8
+multiboot2_header_end:
+
+##################
 # GLOBAL VARIABLES
+##################
     .section .data
     .global linked_label_addr
     linked_label_addr: .long 1f
