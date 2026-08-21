@@ -8,11 +8,16 @@
 #include <kernel/shell.h>
 #include <kernel/eventqueue.h>
 #include <kernel/pmm.h>
+#include <kernel/cpuid.h>
 
 // For TESTING
 #include <kernel/pmm_tests.h>
 
-extern void gdt_install();
+
+extern uint32_t multiboot_magic;
+extern uint32_t multiboot_ptr;
+
+#define   MAGIC_NUMBER 0x36D76289
 
 // https://littleosbook.github.io/#interrupts-and-input
 
@@ -24,11 +29,20 @@ void kernel_main(void) {
 	asm volatile("cli");
 	terminal_initialize();
 
-	printf("Initializing GDT");
-	gdt_install();
-	printf(" [OK]\n\r");
 
-	printf("Installing Inetrrupts\n\r");
+	printf("Multiboot magic: 0x%x\n\r",multiboot_magic);
+	if (multiboot_magic != MAGIC_NUMBER) {
+		printf("WARNING: not loaded by a Multiboot-compliant bootloader\n\r");
+	}
+	else {
+		printf("Magic Number : [OK]\n\r");
+	}
+
+	check_long_mode_support();
+
+	asm volatile("cli");     // Disable Interrupts for now
+
+	printf("Initalizing Interrupts\n\r");
 	install_interrupts();
 	printf(" [OK]\n\r");
 
@@ -37,29 +51,24 @@ void kernel_main(void) {
 	printf(" [OK]\n\r");
 
 	printf("Initalising User Terminal\n\r");
-	shell_init();
-	
+	 shell_init();
 	printf(" [OK]\n\r");
 
-	asm volatile("sti");
+
 
 	terminal_setcolor(VGA_COLOR_LIGHT_BROWN);
 	printf("**************************\n\r");
 	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
 
-	pmm_init();
-	// test ONLY
-	pmm_run_tests();
-	// END TEST
+	 shell_run();
 
-	shell_run();
-	
 	while(1)
 	{
 		for (int a=0;a<0xffff;a++);
 		// check the last key entered into the buffer
 
 	};
+
 
 }
