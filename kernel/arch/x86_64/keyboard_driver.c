@@ -1,7 +1,7 @@
 #include <kernel/keyboard_driver.h>
 #include "stdio.h"
 #include <kernel/registers.h>
-#include "irq.h"
+#include <kernel/irq.h>
 #include <kernel/interrupt_driver.h>
 #include <kernel/port_driver.h>
 #include <kernel/tty.h>

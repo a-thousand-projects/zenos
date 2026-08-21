@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <kernel/tty.h>
-#include "isr.h"
-#include "irq.h"
+#include <kernel/isr.h>
+#include <kernel/irq.h>
 #include <kernel/port_driver.h>
 #include <kernel/registers.h>
 #include <kernel/interrupt_driver.h>

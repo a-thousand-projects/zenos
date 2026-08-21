@@ -42,6 +42,8 @@ void kernel_main(void) {
 
 	asm volatile("cli");     // Disable Interrupts for now
 
+	printf("Initalizing Interrupts\n\r");
+	install_interrupts();
 	printf(" [OK]\n\r");
 
 	printf("Initializing Event Queue\n\r");
@@ -49,7 +51,7 @@ void kernel_main(void) {
 	printf(" [OK]\n\r");
 
 	printf("Initalising User Terminal\n\r");
-	// shell_init();
+	 shell_init();
 	printf(" [OK]\n\r");
 
 
@@ -59,7 +61,7 @@ void kernel_main(void) {
 	printf("* Zenos - Experimental OS*\n\r");
 	printf("**************************\n\r");
 
-	// shell_run();
+	 shell_run();
 
 	while(1)
 	{
